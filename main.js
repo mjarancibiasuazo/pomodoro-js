@@ -2,7 +2,7 @@
 //Almacenamos las tareas
 const tasks = [];
 
-//Cuenta regresiva
+//Cuenta regresiva inicializada en 0
 let time = 0;
 
 //set interval(nos permite ejecutar un pedazo de código cada determinado tiempo)
@@ -14,15 +14,19 @@ let timerBreak = null;
 //Inicilización en 0 tarea actual que se esta ejecutando.
 let current = null;
 
+/* El valor null es un literal de Javascript que representa 
+intencionalmente un valor nulo o "vacío". Es uno de los valores 
+primitivos de Javascript. */
+
 //REFERENCIA A LOS ELEMENTOS HTML
 
-//Botón enviar
+//Botón agregar tareas
 const bAdd = document.querySelector('#bAdd');
 //Botón Input Tareas
 const itTask = document.querySelector('#itTask');
 //Formulario
 const form = document.querySelector('#form');
-
+//Nombre de la tarea
 const taskName = document.querySelector("#time #taskName");
 
 //CONTADOR EN LA PARTE SUPERIOR
@@ -65,7 +69,7 @@ function createTask(value){
 
 function renderTasks(){
     //El map(); regeresa un arreglo de strings
-    //convertimos en html
+    //convertimos en html con la función map
     const html = tasks.map((task) => {
 
         return `
@@ -82,6 +86,10 @@ function renderTasks(){
     const tasksContainer = document.querySelector("#tasks");
     //método join hace solo un string
     tasksContainer.innerHTML = html.join('');
+/* 
+    El método join() une todos los elementos de una matriz 
+    (o un objeto similar a una
+    matriz) en una cadena y devuelve esta cadena. */
 
    
     //BOTONES
@@ -104,7 +112,7 @@ function renderTasks(){
 
 //Calcular los 25' de la actividad principal
 function startButtonHandler(id){
-    time = 05;
+    time = 25 * 60;
     current = id;
     const taskIndex = tasks.findIndex(task => task.id === id);
     taskName.textContent = tasks[taskIndex].title;
@@ -136,7 +144,7 @@ function timerHandler(id){
 }
 
 function startBreak(){
-    time = 3;
+    time = 5 * 60;
     taskName.textContent = 'Break';
     renderTime();
     timerBreak = setInterval(() => {
@@ -157,6 +165,10 @@ function timerBreakHandler(){
         taskName.textContent = '';
         renderTasks();
         //startBreak();
+
+    //El clearInterval()método borra un temporizador establecido 
+    //con el setInterval()método.
+
     }
 }
 
@@ -166,11 +178,12 @@ function renderTime(){
     const minutes = parseInt( time / 60 );
     const seconds = parseInt( time % 60 );
 
-    //FORMATO
+//FORMATO
     timeDiv.textContent = `${minutes < 10 ? "0" : ""}${ minutes }:${seconds < 10 ? "0" : ""}${seconds}`;
 
 }
 
+//Función que cambia de completed a true (Done)
 function markCompleted(id){
     const taskIndex = tasks.findIndex((task) => task.id === id);
     tasks[taskIndex].completed = true;
